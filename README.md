@@ -48,6 +48,7 @@ rspec
 - More algorithms
 - Make the Graph constructor more "safe"
 - Support for directed graphs and flow networks
+- Encapsulation within a gem
 
 ## Credits
 
