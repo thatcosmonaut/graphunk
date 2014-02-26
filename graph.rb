@@ -139,6 +139,50 @@ class Graph < Hash
   end
   alias_method :triangulated?, :chordal?
 
+  def complete?
+    n = vertices.count
+    edges.count == (n * (n-1) / 2)
+  end
+
+  def bipartite?
+    colors = Hash.new
+    d = Hash.new
+    partition = Hash.new
+    vertices.each do |vertex|
+      colors[vertex] = "white"
+      d[vertex] = Float::INFINITY
+      partition[vertex] = 0
+    end
+
+    start = vertices.first
+    colors[start] = "gray"
+    partition[start] = 1
+    d[start] = 0
+
+    stack = []
+    stack.push(start)
+
+    until stack.empty?
+      vertex = stack.pop
+      neighbors_of_vertex(vertex).each do |neighbor|
+        if partition[neighbor] == partition[vertex]
+          return false
+        else
+          if colors[neighbor] == "white"
+            colors[neighbor] == "gray"
+            d[neighbor] = d[vertex] + 1
+            partition[neighbor] = 3 - partition[vertex]
+            stack.push(neighbor)
+          end
+        end
+      end
+      stack.pop
+      colors[vertex] = "black"
+    end
+
+    true
+  end
+
   private
 
   def order_vertices(first_vertex, second_vertex)

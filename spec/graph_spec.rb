@@ -148,6 +148,29 @@ describe Graph do
     end
   end
 
+  describe 'complete?' do
+    it 'returns true if the graph is a complete graph' do
+      graph = Graph['a' => ['b','c','d'], 'b' => ['c','d'], 'c' => ['d'], 'd' => [] ]
+      expect(graph.complete?).to eq true
+    end
+
+    it 'returns false if the graph is not a complete graph' do
+      graph = Graph['a' => ['b','c'], 'b' => ['d'], 'c' => [], 'd' => [] ]
+      expect(graph.complete?).to eq false
+    end
+  end
+
+  describe 'bipartite?' do
+    it 'returns true if the graph is a bipartite graph' do
+      graph = Graph['a' => ['b','c'], 'b' => ['d'], 'c' => ['e'], 'd' => [], 'e' => [] ]
+      expect(graph.bipartite?).to eq true
+    end
+
+    it 'returns false if the graph is not bipartite graph' do
+      expect(graph.bipartite?).to eq false
+    end
+  end
+
   describe 'order_vertices' do
     it 'returns input as sorted array' do
       expect(graph.send(:order_vertices, 'b', 'a')).to eq ['a','b']
