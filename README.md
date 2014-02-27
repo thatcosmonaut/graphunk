@@ -1,13 +1,15 @@
 # Graphunk
 
-Graphunk defines a simple and fully-tested Graph class in Ruby which you can use to perform graph operations.
+Graphunk defines simple and fully-tested graph classes in Ruby which you can use to perform graph-theoretical operations.
 
 ## Defining a Graph
 
-Graph inherits directly from Hash, so you can define a graph in the same way you would define a Hash:
+There are two kinds of graphs supported by this system, directed graphs and undirected graphs.
+
+Graphs inherit from Hash, so you can define a graph in the same way you would define a Hash:
 
 ```
-Graph[
+UndirectedGraph[
   'a' => ['b','c'],
   'b' => ['c', 'd', 'e'],
   'c' => ['d'],
@@ -19,21 +21,30 @@ Graph[
 Each key is a string representing a vertex, and the value is a list
 of strings which represent neighbor vertices of the key.
 
-Graph defines an undirected graph - support for directed graphs and related algorithms will be coming soon.
-In this implementation, edges are not represented redundantly, meaning
+In an undirected graph, edges are not represented redundantly, meaning
 that the edge a-b in the above case is defined by "b" being a member of "a's" list, but
-"a" is not a member of "b's" list.
+"a" is not a member of "b's" list. The add_edge method takes care of ordering automatically.
+
+In a directed graph, the order in an edge matters. A construction of a directed graph
+might look like this:
+
+```
+DirectedGraph[
+  'a' => ['b','c'],
+  'b' => ['a'],
+  'c' => ['d'],
+  'd' => []
+]
+```
 
 Graphs can also be built by individually adding edges and vertices.
 
 ```
-graph = Graph.new
+graph = UndirectedGraph.new
 graph.add_vertex('a')
 graph.add_vertex('b')
 graph.add_edge('a','b')
 ```
-
-The add_edge method will take care of ordering automatically.
 
 ## Testing
 
@@ -47,8 +58,7 @@ rspec
 
 - More algorithms
 - Make the Graph constructor more "safe"
-- Support for directed graphs and flow networks
-- Encapsulation within a gem
+- Support for flow networks
 
 ## Credits
 

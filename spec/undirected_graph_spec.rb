@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Graph do
-  let(:graph) { Graph['a' => ['b', 'c'], 'b' => ['c'], 'c' => []]}
+describe UndirectedGraph do
+  let(:graph) { UndirectedGraph['a' => ['b', 'c'], 'b' => ['c'], 'c' => []]}
 
   describe 'vertices' do
     it 'returns a list of all vertices' do
@@ -116,7 +116,7 @@ describe Graph do
   end
 
   describe 'lexicographic_bfs' do
-    let(:graph) { Graph['a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []] }
+    let(:graph) { UndirectedGraph['a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []] }
 
     it 'returns a lexicographic ordering on the graph' do
       expect(graph.lexicographic_bfs).to eq ['a','b','c','d','e']
@@ -124,7 +124,7 @@ describe Graph do
   end
 
   describe 'chordal?' do
-    let(:graph) { Graph['a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []] }
+    let(:graph) { UndirectedGraph['a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []] }
 
     it 'returns true if the graph is a chordal graph' do
       expect(graph.chordal?).to eq true
@@ -137,7 +137,7 @@ describe Graph do
   end
 
   describe 'clique?' do
-    let(:graph) { Graph['a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []] }
+    let(:graph) { UndirectedGraph['a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []] }
 
     it 'returns true if the input vertices are a clique' do
       expect(graph.clique?(['a','b','c'])).to eq true
@@ -150,19 +150,19 @@ describe Graph do
 
   describe 'complete?' do
     it 'returns true if the graph is a complete graph' do
-      graph = Graph['a' => ['b','c','d'], 'b' => ['c','d'], 'c' => ['d'], 'd' => [] ]
+      graph = UndirectedGraph['a' => ['b','c','d'], 'b' => ['c','d'], 'c' => ['d'], 'd' => [] ]
       expect(graph.complete?).to eq true
     end
 
     it 'returns false if the graph is not a complete graph' do
-      graph = Graph['a' => ['b','c'], 'b' => ['d'], 'c' => [], 'd' => [] ]
+      graph = UndirectedGraph['a' => ['b','c'], 'b' => ['d'], 'c' => [], 'd' => [] ]
       expect(graph.complete?).to eq false
     end
   end
 
   describe 'bipartite?' do
     it 'returns true if the graph is a bipartite graph' do
-      graph = Graph['a' => ['b','c'], 'b' => ['d'], 'c' => ['e'], 'd' => [], 'e' => [] ]
+      graph = UndirectedGraph['a' => ['b','c'], 'b' => ['d'], 'c' => ['e'], 'd' => [], 'e' => [] ]
       expect(graph.bipartite?).to eq true
     end
 
