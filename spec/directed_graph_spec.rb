@@ -103,4 +103,57 @@ describe DirectedGraph do
       expect(graph.vertex_exists?('t')).to eql false
     end
   end
+
+  describe 'transpose' do
+    it 'returns a graph which is the transpose of the current graph' do
+      expect(graph.transpose.edges).to match_array [ ['a','b'], ['b', 'a'], ['c','a'], ['d', 'b'] ]
+    end
+  end
+
+  describe 'tranpose!' do
+    it 'tranposes the graph in-place' do
+      graph.transpose!
+      expect(graph.edges).to match_array [ ['a','b'], ['b', 'a'], ['c','a'], ['d', 'b'] ]
+    end
+  end
+
+  describe 'reachable_by_two_path' do
+    it 'returns a list of all vertices reachable from the input vertex with a 2-path' do
+      graph.add_vertex('e')
+      expect(graph.reachable_by_two_path('a')).to match_array ['a','b','c','d']
+    end
+
+    it 'raises an error if the input vertex does not exist' do
+      expect{graph.reachable_by_two_path('z')}.to raise_error ArgumentError
+    end
+  end
+
+  describe 'square' do
+    it 'returns a graph which is the square of the graph' do
+      expect(graph.square.edges).to match_array [ ['a','b'], ['a','c'], ['b','a'], ['b','c'], ['b','d'], ['a','d'] ]
+    end
+  end
+
+  describe 'dfs' do
+    it 'returns a hash containing depth-first start and finish times for each vertex' do
+      graph = DirectedGraph['a' => ['b', 'c'], 'b' => ['d'], 'c' => [], 'd' => [] ]
+      result = { 'a' => { start: 1, finish: 8 }, 'b' => { start: 2, finish: 5 }, 'c' => { start: 6, finish: 7 }, 'd' => { start: 3, finish: 4 } }
+      expect(graph.dfs).to eql result
+    end
+  end
+
+  describe 'topological sort' do
+    context 'connected graph' do
+      it 'returns a valid topological ordering on the graph' do
+        expect(graph.topological_sort).to eq [ 'a','c','b','d' ]
+      end
+    end
+
+    context 'unconnected graph' do
+      it 'returns a valid topological ordering on the graph' do
+        graph = DirectedGraph[ 'a' => ['b','c','d'], 'b' => ['f', 'g'], 'c' => ['g'], 'd' => [], 'e' => ['t'], 'f' => [], 'g' => [], 't' => ['m'], 'm' => [] ]
+        expect(graph.topological_sort).to eq [ 'e', 't', 'm', 'a', 'd', 'c', 'b', 'g', 'f' ]
+      end
+    end
+  end
 end
