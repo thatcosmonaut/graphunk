@@ -24,10 +24,20 @@ class Graph < Hash
 
   def remove_vertex(name)
     if vertex_exists?(name)
-      self.each_pair do |key, value|
-        self[key].delete(name) if value.include?(name)
+      edges.each do |edge|
+        remove_edge(edge.first, edge.last) if edge.include?(name)
       end
       self.delete(name)
+    else
+      raise ArgumentError, "That vertex does not exist in the graph"
+    end
+  end
+
+  def neighbors_of_vertex(name)
+    if vertex_exists?(name)
+      edges.select { |edge| edge.include? name }.map do |edge|
+        edge.first == name ? edge.last : edge.first
+      end
     else
       raise ArgumentError, "That vertex does not exist in the graph"
     end
@@ -41,7 +51,17 @@ class Graph < Hash
     end
   end
 
+  def edge_exists?(first_vertex, second_vertex)
+    edges.include?(order_vertices(first_vertex, second_vertex))
+  end
+
   def vertex_exists?(name)
     vertices.include?(name)
+  end
+
+  private
+
+  def order_vertices(v, u)
+    [v, u].sort
   end
 end

@@ -22,24 +22,6 @@ class UndirectedGraph < Graph
     end
   end
 
-  def neighbors_of_vertex(name)
-    if vertex_exists?(name)
-      edges.select { |edge| edge.include? name }.map do |edge|
-        if edge.first == name
-          edge.last
-        else
-          edge.first
-        end
-      end
-    else
-      raise ArgumentError, "That vertex does not exist in the graph"
-    end
-  end
-
-  def edge_exists?(first_vertex, second_vertex)
-    edges.include?(order_vertices(first_vertex, second_vertex))
-  end
-
   def lexicographic_bfs
     sets = [vertices]
     output_vertices = []
@@ -135,11 +117,5 @@ class UndirectedGraph < Graph
     end
 
     true
-  end
-
-  private
-
-  def order_vertices(first_vertex, second_vertex)
-    [first_vertex, second_vertex].sort
   end
 end
