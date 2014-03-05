@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe DirectedGraph do
-  let(:graph) { DirectedGraph['a' => ['b', 'c'], 'b' => ['a','d'], 'c' => [], 'd' => [] ] }
+  let(:graph) { DirectedGraph.new({'a' => ['b', 'c'], 'b' => ['a','d'], 'c' => [], 'd' => [] }) }
 
   describe 'vertices' do
     it 'returns a list of all vertices' do
@@ -26,6 +26,21 @@ describe DirectedGraph do
     context 'vertex already exists' do
       it 'raises an ArgumentError' do
         expect{graph.add_vertex('a')}.to raise_error ArgumentError
+      end
+    end
+  end
+
+  describe 'add_vertices' do
+    context 'vertices do not exist' do
+      it 'adds the vertices to the graph' do
+        graph.add_vertices('g','h','i')
+        expect(graph.vertices).to match_array ['a','b','c','d','g','h','i']
+      end
+    end
+
+    context 'one of the vertices exists in the graph' do
+      it 'raises an ArgumentError' do
+        expect{graph.add_vertices('g','h','a')}.to raise_error ArgumentError
       end
     end
   end
@@ -174,7 +189,7 @@ describe DirectedGraph do
 
   describe 'dfs' do
     it 'returns a hash containing depth-first start and finish times for each vertex' do
-      graph = DirectedGraph['a' => ['b', 'c'], 'b' => ['d'], 'c' => [], 'd' => [] ]
+      graph = DirectedGraph.new({'a' => ['b', 'c'], 'b' => ['d'], 'c' => [], 'd' => [] })
       result = { 'a' => { start: 1, finish: 8 }, 'b' => { start: 2, finish: 5 }, 'c' => { start: 6, finish: 7 }, 'd' => { start: 3, finish: 4 } }
       expect(graph.dfs).to eql result
     end
@@ -189,7 +204,7 @@ describe DirectedGraph do
 
     context 'unconnected graph' do
       it 'returns a valid topological ordering on the graph' do
-        graph = DirectedGraph[ 'a' => ['b','c','d'], 'b' => ['f', 'g'], 'c' => ['g'], 'd' => [], 'e' => ['t'], 'f' => [], 'g' => [], 't' => ['m'], 'm' => [] ]
+        graph = DirectedGraph.new({ 'a' => ['b','c','d'], 'b' => ['f', 'g'], 'c' => ['g'], 'd' => [], 'e' => ['t'], 'f' => [], 'g' => [], 't' => ['m'], 'm' => [] })
         expect(graph.topological_sort).to eq [ 'e', 't', 'm', 'a', 'd', 'c', 'b', 'g', 'f' ]
       end
     end

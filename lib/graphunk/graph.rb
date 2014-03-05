@@ -1,13 +1,17 @@
 # this class should not be invoked directly
-class Graph < Hash
+class Graph
+  def initialize(hash = {})
+    @representation = hash
+  end
+
   def vertices
-    keys
+    @representation.keys
   end
 
   def edges
     [].tap do |edge_constructor|
       vertices.each do |vertex|
-        self[vertex].each do |neighbor|
+        @representation[vertex].each do |neighbor|
           edge_constructor << [vertex, neighbor]
         end
       end
@@ -16,9 +20,17 @@ class Graph < Hash
 
   def add_vertex(name)
     unless vertex_exists?(name)
-      self[name] = []
+      @representation[name] = []
     else
       raise ArgumentError, "Vertex already exists"
+    end
+  end
+
+  def add_vertices(*names)
+    if (names & vertices).count == 0
+      names.each { |name| add_vertex(name) }
+    else
+      raise ArgumentError, "One or more of the given vertices already exists"
     end
   end
 
@@ -27,7 +39,7 @@ class Graph < Hash
       edges.each do |edge|
         remove_edge(edge.first, edge.last) if edge.include?(name)
       end
-      self.delete(name)
+      @representation.delete(name)
     else
       raise ArgumentError, "That vertex does not exist in the graph"
     end

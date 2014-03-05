@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe UndirectedGraph do
-  let(:graph) { UndirectedGraph['a' => ['b', 'c'], 'b' => ['c'], 'c' => []]}
+  let(:graph) { UndirectedGraph.new({'a' => ['b', 'c'], 'b' => ['c'], 'c' => [] }) }
 
   describe 'vertices' do
     it 'returns a list of all vertices' do
@@ -26,6 +26,21 @@ describe UndirectedGraph do
     context 'vertex exists' do
       it 'raises an ArgumentError' do
         expect{graph.add_vertex('a')}.to raise_error ArgumentError
+      end
+    end
+  end
+
+  describe 'add_vertices' do
+    context 'vertices do not exist' do
+      it 'adds the vertices to the graph' do
+        graph.add_vertices('g','h','i')
+        expect(graph.vertices).to match_array ['a','b','c','g','h','i']
+      end
+    end
+
+    context 'one of the vertices exists in the graph' do
+      it 'raises an ArgumentError' do
+        expect{graph.add_vertices('g','h','a')}.to raise_error ArgumentError
       end
     end
   end
@@ -155,7 +170,7 @@ describe UndirectedGraph do
   end
 
   describe 'lexicographic_bfs' do
-    let(:graph) { UndirectedGraph['a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []] }
+    let(:graph) { UndirectedGraph.new({'a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []}) }
 
     it 'returns a lexicographic ordering on the graph' do
       expect(graph.lexicographic_bfs).to eq ['a','b','c','d','e']
@@ -163,7 +178,7 @@ describe UndirectedGraph do
   end
 
   describe 'chordal?' do
-    let(:graph) { UndirectedGraph['a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []] }
+    let(:graph) { UndirectedGraph.new({'a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []}) }
 
     context 'graph is chordal' do
       it 'returns true' do
@@ -180,7 +195,7 @@ describe UndirectedGraph do
   end
 
   describe 'clique?' do
-    let(:graph) { UndirectedGraph['a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []] }
+    let(:graph) { UndirectedGraph.new({'a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => [] }) }
 
     context 'input vertices are a clique' do
       it 'returns true' do
@@ -198,14 +213,14 @@ describe UndirectedGraph do
   describe 'complete?' do
     context 'graph is complete' do
       it 'returns true' do
-        graph = UndirectedGraph['a' => ['b','c','d'], 'b' => ['c','d'], 'c' => ['d'], 'd' => [] ]
+        graph = UndirectedGraph.new({'a' => ['b','c','d'], 'b' => ['c','d'], 'c' => ['d'], 'd' => [] })
         expect(graph.complete?).to eq true
       end
     end
 
     context 'graph is not complete' do
       it 'returns false' do
-        graph = UndirectedGraph['a' => ['b','c'], 'b' => ['d'], 'c' => [], 'd' => [] ]
+        graph = UndirectedGraph.new({'a' => ['b','c'], 'b' => ['d'], 'c' => [], 'd' => [] })
         expect(graph.complete?).to eq false
       end
     end
@@ -214,7 +229,7 @@ describe UndirectedGraph do
   describe 'bipartite?' do
     context 'graph is bipartite' do
       it 'returns true' do
-        graph = UndirectedGraph['a' => ['b','c'], 'b' => ['d'], 'c' => ['e'], 'd' => [], 'e' => [] ]
+        graph = UndirectedGraph.new({'a' => ['b','c'], 'b' => ['d'], 'c' => ['e'], 'd' => [], 'e' => [] })
         expect(graph.bipartite?).to eq true
       end
     end

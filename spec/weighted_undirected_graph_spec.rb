@@ -2,9 +2,10 @@ require 'spec_helper'
 
 describe WeightedUndirectedGraph do
   let(:graph) do
-    graph = WeightedUndirectedGraph['a' => ['b', 'c'], 'b' => ['c', 'd'], 'c' => [], 'd' => [] ]
-    graph.weights = { ['a','b'] => 2, ['a','c'] => 4, ['b','c'] => 8, ['b','d'] => 5 }
-    graph
+    WeightedUndirectedGraph.new(
+      {'a' => ['b', 'c'], 'b' => ['c', 'd'], 'c' => [], 'd' => [] },
+      { ['a','b'] => 2, ['a','c'] => 4, ['b','c'] => 8, ['b','d'] => 5 }
+    )
   end
 
   describe 'remove_vertex' do
@@ -83,6 +84,12 @@ describe WeightedUndirectedGraph do
     end
   end
 
+  describe 'edge_weight' do
+    it 'gets the weight of the given edge' do
+      expect(graph.edge_weight(['a','b'])).to eql 2
+    end
+  end
+
   describe 'adjust_weight' do
     context 'the edge exists' do
       it 'adjusts the value in the weight hash' do
@@ -100,9 +107,10 @@ describe WeightedUndirectedGraph do
 
   describe 'minimum_spanning_tree' do
     let(:graph) do
-      graph = WeightedUndirectedGraph[ 'a' => ['b','d'], 'b' => ['c','d','e'], 'c' => ['e','f'], 'd' => ['e'], 'e' => ['f'], 'f' => [] ]
-      graph.weights = {['a','b'] => 1, ['a','d'] => 3, ['b','c'] => 6, ['b','d'] => 5, ['b','e'] => 1, ['c','e'] => 5, ['c','f'] => 2, ['d','e'] => 1, ['e','f'] => 4 }
-      graph
+      WeightedUndirectedGraph.new(
+        { 'a' => ['b','d'], 'b' => ['c','d','e'], 'c' => ['e','f'], 'd' => ['e'], 'e' => ['f'], 'f' => [] },
+        { ['a','b'] => 1, ['a','d'] => 3, ['b','c'] => 6, ['b','d'] => 5, ['b','e'] => 1, ['c','e'] => 5, ['c','f'] => 2, ['d','e'] => 1, ['e','f'] => 4 }
+      )
     end
 
     it 'contains all the vertices in the original graph' do
