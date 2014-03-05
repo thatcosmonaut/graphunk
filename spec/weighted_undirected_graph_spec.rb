@@ -108,8 +108,8 @@ describe WeightedUndirectedGraph do
   describe 'minimum_spanning_tree' do
     let(:graph) do
       WeightedUndirectedGraph.new(
-      { 'a' => ['b','d'], 'b' => ['c','d','e'], 'c' => ['e','f'], 'd' => ['e'], 'e' => ['f'], 'f' => [] },
-      { ['a','b'] => 1, ['a','d'] => 3, ['b','c'] => 6, ['b','d'] => 5, ['b','e'] => 1, ['c','e'] => 5, ['c','f'] => 2, ['d','e'] => 1, ['e','f'] => 4 }
+        { 'a' => ['b','d'], 'b' => ['c','d','e'], 'c' => ['e','f'], 'd' => ['e'], 'e' => ['f'], 'f' => [] },
+        { ['a','b'] => 1, ['a','d'] => 3, ['b','c'] => 6, ['b','d'] => 5, ['b','e'] => 1, ['c','e'] => 5, ['c','f'] => 2, ['d','e'] => 1, ['e','f'] => 4 }
       )
     end
 

@@ -26,6 +26,14 @@ class Graph
     end
   end
 
+  def add_vertices(*names)
+    if (names & vertices).count == 0
+      names.each { |name| add_vertex(name) }
+    else
+      raise ArgumentError, "One or more of the given vertices already exists"
+    end
+  end
+
   def remove_vertex(name)
     if vertex_exists?(name)
       edges.each do |edge|

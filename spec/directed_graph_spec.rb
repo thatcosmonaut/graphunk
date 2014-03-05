@@ -30,6 +30,21 @@ describe DirectedGraph do
     end
   end
 
+  describe 'add_vertices' do
+    context 'vertices do not exist' do
+      it 'adds the vertices to the graph' do
+        graph.add_vertices('g','h','i')
+        expect(graph.vertices).to match_array ['a','b','c','d','g','h','i']
+      end
+    end
+
+    context 'one of the vertices exists in the graph' do
+      it 'raises an ArgumentError' do
+        expect{graph.add_vertices('g','h','a')}.to raise_error ArgumentError
+      end
+    end
+  end
+
   describe 'add_edge' do
     context 'edge does not exist' do
       it 'adds an edge to the graph' do
