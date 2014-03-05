@@ -4,18 +4,18 @@ Graphunk defines simple and fully-tested graph classes in Ruby which you can use
 
 ## Defining a Graph
 
-There are two kinds of graphs supported by this system, directed graphs and undirected graphs.
+### Unweighted Graphs
 
-Graphs inherit from Hash, so you can define a graph in the same way you would define a Hash:
+Graphs are internally represented as a hash, so you can define a graph similarly to how you would define a Hash:
 
 ```
-UndirectedGraph[
+UndirectedGraph.new({
   'a' => ['b','c'],
   'b' => ['c', 'd', 'e'],
   'c' => ['d'],
   'd' => ['e'],
   'e' => []
-]
+})
 ```
 
 Each key is a string representing a vertex, and the value is a list
@@ -29,12 +29,12 @@ In a directed graph, the order in an edge matters. A construction of a directed 
 might look like this:
 
 ```
-DirectedGraph[
+DirectedGraph.new({
   'a' => ['b','c'],
   'b' => ['a'],
   'c' => ['d'],
   'd' => []
-]
+})
 ```
 
 Graphs can also be built by individually adding edges and vertices.
@@ -45,6 +45,40 @@ graph.add_vertex('a')
 graph.add_vertex('b')
 graph.add_edge('a','b')
 ```
+
+### Weighted Graphs
+
+Weighted graphs have an additional property: each edge must specify a numerical weight.
+
+To construct a weighted graph, you must pass in the vertex and edge information as well as the weights:
+
+```
+WeightedUndirectedGraph.new({
+  'a' => ['b','c'],
+  'b' => ['c', 'd', 'e'],
+  'c' => ['d'],
+  'd' => ['e'],
+  'e' => []
+},
+{
+  ['a','b'] => 2,
+  ['a','c'] => 4,
+  ['b','c'] => 1,
+  ['b','d'] => 4,
+  ['b','e'] => 7,
+  ['c','d'] => 4,
+  ['d','e'] => 3
+})
+```
+
+You can also build them by adding vertices and edges.
+```
+  graph = WeightedUndirectedGraph.new
+  graph.add_vertex('a')
+  graph.add_vertex('b')
+  graph.add_edge('a','b',3)
+```
+Now the edge 'a-b' will have a weight of 3.
 
 ## Testing
 

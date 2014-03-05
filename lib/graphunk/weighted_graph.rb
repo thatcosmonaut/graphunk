@@ -1,10 +1,10 @@
 #this class should not be invoked directly
 class WeightedGraph < Graph
 
-  attr_accessor :weights
+  attr_reader :weights
 
-  def initialize
-    super
-    @weights = {}
+  def initialize(hash = {}, weights = {})
+    @representation = hash
+    @weights = weights
   end
 end

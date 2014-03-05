@@ -6,7 +6,7 @@ class UndirectedGraph < Graph
       raise ArgumentError, "This edge already exists"
     elsif vertex_exists?(first_vertex) && vertex_exists?(second_vertex)
       ordered_vertices = order_vertices(first_vertex, second_vertex)
-      self[ordered_vertices.first] << ordered_vertices.last
+      @representation[ordered_vertices.first] << ordered_vertices.last
     else
       raise ArgumentError, "One of the vertices referenced does not exist in the graph"
     end
@@ -15,7 +15,7 @@ class UndirectedGraph < Graph
   def remove_edge(first_vertex, second_vertex)
     if edge_exists?(first_vertex, second_vertex)
       ordered_vertices = order_vertices(first_vertex, second_vertex)
-      self[ordered_vertices.first].delete(ordered_vertices.last)
+      @representation[ordered_vertices.first].delete(ordered_vertices.last)
     else
       raise ArgumentError, "That edge does not exist in the graph"
     end
