@@ -1,4 +1,3 @@
-require 'graph'
 class DirectedGraph < Graph
   def add_edge(first_vertex, second_vertex)
     if edge_exists?(first_vertex, second_vertex)

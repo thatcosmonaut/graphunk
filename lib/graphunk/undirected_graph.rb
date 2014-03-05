@@ -1,4 +1,3 @@
-require 'graph'
 require 'set'
 
 class UndirectedGraph < Graph

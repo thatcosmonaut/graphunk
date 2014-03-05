@@ -97,4 +97,20 @@ describe WeightedUndirectedGraph do
       end
     end
   end
+
+  describe 'minimum_spanning_tree' do
+    let(:graph) do
+      graph = WeightedUndirectedGraph[ 'a' => ['b','d'], 'b' => ['c','d','e'], 'c' => ['e','f'], 'd' => ['e'], 'e' => ['f'], 'f' => [] ]
+      graph.weights = {['a','b'] => 1, ['a','d'] => 3, ['b','c'] => 6, ['b','d'] => 5, ['b','e'] => 1, ['c','e'] => 5, ['c','f'] => 2, ['d','e'] => 1, ['e','f'] => 4 }
+      graph
+    end
+
+    it 'contains all the vertices in the original graph' do
+      expect(graph.minimum_spanning_tree.vertices).to match_array graph.vertices
+    end
+
+    it 'contains only the edges in the minimum spanning tree ' do
+      expect(graph.minimum_spanning_tree.edges).to match_array [ ['a','b'], ['b', 'e'], ['c','f'], ['d','e'], ['e','f'] ]
+    end
+  end
 end
