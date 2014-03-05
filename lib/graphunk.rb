@@ -1,2 +1,5 @@
-require 'undirected_graph'
-require 'directed_graph'
+require 'graphunk/graph'
+require 'graphunk/undirected_graph'
+require 'graphunk/directed_graph'
+require 'graphunk/weighted_graph'
+require 'graphunk/weighted_undirected_graph'
