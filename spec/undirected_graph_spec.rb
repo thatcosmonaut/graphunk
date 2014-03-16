@@ -207,7 +207,12 @@ describe UndirectedGraph do
       it 'returns false' do
         expect(graph.clique?(['b','c','e'])).to eq false
       end
+
+      it 'meets the performance metrics' do
+        expect{graph.clique?(['a','b','c'])}.to run(50000).times_in_less_than(2.seconds)
+      end
     end
+
   end
 
   describe 'complete?' do

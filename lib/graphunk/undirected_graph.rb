@@ -53,7 +53,7 @@ class UndirectedGraph < Graph
   def clique?(vertex_list)
     clique = true
     vertex_list.each do |vertex|
-      unless (neighbors_of_vertex(vertex) & vertex_list).to_set == (vertex_list - [vertex]).to_set
+      unless (neighbors_of_vertex(vertex) & vertex_list).sort == (vertex_list - [vertex]).sort
         clique = false
         break
       end

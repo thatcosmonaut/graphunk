@@ -1,5 +1,6 @@
 $:<< File.join(File.dirname(__FILE__), '..')
 require 'lib/graphunk'
+require 'benches'
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
@@ -11,4 +12,6 @@ RSpec.configure do |config|
   config.color_enabled = true
   config.tty = true
   config.formatter =  :documentation
+
+  config.include Benches::Matchers
 end
