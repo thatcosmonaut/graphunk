@@ -11,6 +11,6 @@ Gem::Specification.new do |s|
     'https://github.com/ehemsley/graphunk'
   s.license       = 'MIT'
 
-  s.add_dependency 'rspec', '~> 2.14.1'
-  s.add_development_dependency 'benches', '~> 0.3.0'
+  s.add_dependency 'rspec', '~> 2.14', '>= 2.14.1'
+  s.add_development_dependency 'benches', '~> 0.3', '>= 0.3.0'
 end
