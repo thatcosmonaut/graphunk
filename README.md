@@ -9,7 +9,7 @@ Graphunk defines simple and fully-tested graph classes in Ruby which you can use
 Graphs are internally represented as a hash, so you can define a graph similarly to how you would define a Hash:
 
 ```
-UndirectedGraph.new({
+Graphunk::UndirectedGraph.new({
   'a' => ['b','c'],
   'b' => ['c', 'd', 'e'],
   'c' => ['d'],
@@ -29,7 +29,7 @@ In a directed graph, the order in an edge matters. A construction of a directed 
 might look like this:
 
 ```
-DirectedGraph.new({
+Graphunk::DirectedGraph.new({
   'a' => ['b','c'],
   'b' => ['a'],
   'c' => ['d'],
@@ -40,7 +40,7 @@ DirectedGraph.new({
 Graphs can also be built by individually adding edges and vertices.
 
 ```
-graph = UndirectedGraph.new
+graph = Graphunk::UndirectedGraph.new
 graph.add_vertex('a')
 graph.add_vertex('b')
 graph.add_edge('a','b')
@@ -53,7 +53,7 @@ Weighted graphs have an additional property: each edge must specify a numerical 
 To construct a weighted graph, you must pass in the vertex and edge information as well as the weights:
 
 ```
-WeightedUndirectedGraph.new({
+Graphunk::WeightedUndirectedGraph.new({
   'a' => ['b','c'],
   'b' => ['c', 'd', 'e'],
   'c' => ['d'],
@@ -73,14 +73,14 @@ WeightedUndirectedGraph.new({
 
 You can also build them by adding vertices and edges.
 ```
-  graph = WeightedUndirectedGraph.new
+  graph = Graphunk::WeightedUndirectedGraph.new
   graph.add_vertex('a')
   graph.add_vertex('b')
   graph.add_edge('a','b',3)
 ```
 Now the edge 'a-b' will have a weight of 3.
 
-WeightedDirectedGraphs behave similarly.
+WeightedDirectedGraph behaves similarly.
 
 ## Testing
 
@@ -100,4 +100,4 @@ rspec
 
 All code (c) Evan Hemsley 2014
 
-Special thanks to Mitchell Gerrard for inpiring this project.
+Special thanks to Mitchell Gerrard for inspiring this project.
