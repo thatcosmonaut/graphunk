@@ -85,8 +85,16 @@ describe WeightedUndirectedGraph do
   end
 
   describe 'edge_weight' do
-    it 'gets the weight of the given edge' do
-      expect(graph.edge_weight(['a','b'])).to eql 2
+    context 'edge exists' do
+      it 'gets the weight of the given edge' do
+        expect(graph.edge_weight('a','b')).to eql 2
+      end
+    end
+
+    context 'edge does not exist' do
+      it 'raises an ArgumentError' do
+        expect{graph.edge_weight('z','f')}.to raise_error ArgumentError
+      end
     end
   end
 
