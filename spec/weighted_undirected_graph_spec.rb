@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe WeightedUndirectedGraph do
+describe Graphunk::WeightedUndirectedGraph do
   let(:graph) do
-    WeightedUndirectedGraph.new(
+    Graphunk::WeightedUndirectedGraph.new(
       {'a' => ['b', 'c'], 'b' => ['c', 'd'], 'c' => [], 'd' => [] },
       { ['a','b'] => 2, ['a','c'] => 4, ['b','c'] => 8, ['b','d'] => 5 }
     )
@@ -115,7 +115,7 @@ describe WeightedUndirectedGraph do
 
   describe 'minimum_spanning_tree' do
     let(:graph) do
-      WeightedUndirectedGraph.new(
+      Graphunk::WeightedUndirectedGraph.new(
         { 'a' => ['b','d'], 'b' => ['c','d','e'], 'c' => ['e','f'], 'd' => ['e'], 'e' => ['f'], 'f' => [] },
         { ['a','b'] => 1, ['a','d'] => 3, ['b','c'] => 6, ['b','d'] => 5, ['b','e'] => 1, ['c','e'] => 5, ['c','f'] => 2, ['d','e'] => 1, ['e','f'] => 4 }
       )

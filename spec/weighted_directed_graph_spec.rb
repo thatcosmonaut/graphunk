@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe WeightedDirectedGraph do
+describe Graphunk::WeightedDirectedGraph do
   let(:graph) do
-    WeightedDirectedGraph.new(
+    Graphunk::WeightedDirectedGraph.new(
       {'a' => ['b','c','e'], 'b' => ['c', 'd'], 'c' => ['d'], 'd' => ['a'], 'e' => [] },
       {['a','b'] => 3, ['a','c'] => 6, ['a','e'] => 6, ['b','c'] => 2, ['b','d'] => 7, ['c','d'] => 3, ['d','a'] => 4}
     )

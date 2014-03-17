@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe DirectedGraph do
-  let(:graph) { DirectedGraph.new({'a' => ['b', 'c'], 'b' => ['a','d'], 'c' => [], 'd' => [] }) }
+describe Graphunk::DirectedGraph do
+  let(:graph) { Graphunk::DirectedGraph.new({'a' => ['b', 'c'], 'b' => ['a','d'], 'c' => [], 'd' => [] }) }
 
   describe 'vertices' do
     it 'returns a list of all vertices' do
@@ -189,7 +189,7 @@ describe DirectedGraph do
 
   describe 'dfs' do
     it 'returns a hash containing depth-first start and finish times for each vertex' do
-      graph = DirectedGraph.new({'a' => ['b', 'c'], 'b' => ['d'], 'c' => [], 'd' => [] })
+      graph = Graphunk::DirectedGraph.new({'a' => ['b', 'c'], 'b' => ['d'], 'c' => [], 'd' => [] })
       result = { 'a' => { start: 1, finish: 8 }, 'b' => { start: 2, finish: 5 }, 'c' => { start: 6, finish: 7 }, 'd' => { start: 3, finish: 4 } }
       expect(graph.dfs).to eql result
     end
@@ -204,7 +204,7 @@ describe DirectedGraph do
 
     context 'unconnected graph' do
       it 'returns a valid topological ordering on the graph' do
-        graph = DirectedGraph.new({ 'a' => ['b','c','d'], 'b' => ['f', 'g'], 'c' => ['g'], 'd' => [], 'e' => ['t'], 'f' => [], 'g' => [], 't' => ['m'], 'm' => [] })
+        graph = Graphunk::DirectedGraph.new({ 'a' => ['b','c','d'], 'b' => ['f', 'g'], 'c' => ['g'], 'd' => [], 'e' => ['t'], 'f' => [], 'g' => [], 't' => ['m'], 'm' => [] })
         expect(graph.topological_sort).to eq [ 'e', 't', 'm', 'a', 'd', 'c', 'b', 'g', 'f' ]
       end
     end
