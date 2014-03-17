@@ -80,6 +80,8 @@ You can also build them by adding vertices and edges.
 ```
 Now the edge 'a-b' will have a weight of 3.
 
+WeightedDirectedGraphs behave similarly.
+
 ## Testing
 
 To run the test suite simply execute:

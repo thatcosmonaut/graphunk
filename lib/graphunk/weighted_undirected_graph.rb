@@ -22,13 +22,17 @@ class WeightedUndirectedGraph < WeightedGraph
     end
   end
 
-  def edge_weight(edge)
-    @weights[edge]
+  def edge_weight(v, u)
+    if edge_exists?(v,u)
+      @weights[order_vertices(v,u)]
+    else
+      raise ArgumentError, "That edge does not exist in the graph"
+    end
   end
 
   def adjust_weight(v, u, w)
     if edge_exists?(v, u)
-      @weights[[v,u]] = w
+      @weights[order_vertices(v,u)] = w
     else
       raise ArgumentError, "That edge does not exist in the graph"
     end

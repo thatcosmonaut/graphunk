@@ -7,4 +7,5 @@ class WeightedGraph < Graph
     @representation = hash
     @weights = weights
   end
+
 end
