@@ -209,4 +209,22 @@ describe Graphunk::DirectedGraph do
       end
     end
   end
+
+  describe 'transitive?' do
+    context 'the orientation is transitive' do
+      let(:graph) { Graphunk::DirectedGraph.new({'a' => ['b','g'], 'b' => [], 'c' => ['d'], 'd' => [], 'e' => ['d'], 'f' => ['d','e','g'], 'g' => []}) }
+
+      it 'returns true' do
+        expect(graph.transitive?).to eql true
+      end
+    end
+
+    context 'the orientation is not transitive' do
+      let(:graph) { Graphunk::DirectedGraph.new({'a' => ['b'], 'b' => ['c'], 'c' => ['d'], 'd' => ['e'], 'e' => ['f'], 'f' => ['g'], 'g' => ['a']}) }
+
+      it 'returns false' do
+        expect(graph.transitive?).to eql false
+      end
+    end
+  end
 end

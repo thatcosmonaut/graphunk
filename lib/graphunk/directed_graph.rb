@@ -105,5 +105,28 @@ module Graphunk
     def topological_sort
       dfs.sort_by { |vertex, times| times[:finish] }.map(&:first).reverse
     end
+
+    def transitive?
+      transitive = true
+      vertices.each do |vertex|
+        reachable_by_two_edges(vertex).each do |reachable|
+          transitive = false unless neighbors_of_vertex(vertex).include?(reachable)
+        end
+      end
+      transitive
+    end
+
+    private
+
+    def reachable_by_two_edges(start)
+      reachable_by_two = []
+      reachable_by_one = neighbors_of_vertex(start)
+      reachable_by_one.each do |v|
+        neighbors_of_vertex(v).each do |u|
+          reachable_by_two << u
+        end
+      end
+      reachable_by_two
+    end
   end
 end

@@ -20,6 +20,22 @@ module Graphunk
       end
     end
 
+    def degree(vertex)
+      neighbors_of_vertex(vertex).count
+    end
+
+    def adjacent_edges?(first_edge, second_edge)
+      adjacent_edges(first_edge).include? second_edge
+    end
+
+    def adjacent_edges(v, u)
+      if edge_exists?(v, u)
+        edges.select { |edge| edge.include?(v) || edge.include?(u) } - [[v,u]]
+      else
+        raise ArgumentError, "That edge does not exist in the graph"
+      end
+    end
+
     def lexicographic_bfs
       sets = [vertices]
       output_vertices = []
@@ -63,7 +79,7 @@ module Graphunk
     def chordal?
       chordal = true
       (lexicographic_ordering = lexicographic_bfs.reverse).each_with_index do |v, i|
-        successors_of_v = lexicographic_ordering[i, lexicographic_ordering.size]
+        successors_of_v = lexicographic_ordering[i..-1]
         unless clique?([v] | (neighbors_of_vertex(v) & successors_of_v))
           chordal = false
           break
@@ -116,5 +132,66 @@ module Graphunk
 
       true
     end
+
+    def comparability?
+      assign_orientation
+    end
+
+    def transitive_orientation
+      assign_orientation(true)
+    end
+
+    private
+
+    def assign_orientation(return_graph = false)
+      transitive_orientation = Graphunk::DirectedGraph.new
+      transitive_orientation.add_vertices(*vertices)
+
+      unconsidered_edges = edges
+
+      transitive = true
+
+      until unconsidered_edges.empty?
+        considered_edge = unconsidered_edges.first
+        unconsidered_edges.delete(considered_edge)
+
+        transitive_orientation.add_edge(considered_edge.first, considered_edge.last)
+
+        explore = lambda do |edge|
+          if unconsidered_edges.include? edge
+            adjacent_edges(edge.first, edge.last).each do |adjacent_edge|
+              next if unconsidered_edges.include? adjacent_edge
+
+              shared_vertex = adjacent_edge.select { |vertex| edge.include? vertex }.first
+              unshared_edge_vertex = edge.reject { |vertex| adjacent_edge.include? vertex }.first
+              unshared_adjacent_edge_vertex = adjacent_edge.reject { |vertex| edge.include? vertex }.first
+
+              unless edge_exists?(unshared_edge_vertex, unshared_adjacent_edge_vertex)
+                if transitive_orientation.edge_exists?(shared_vertex, unshared_adjacent_edge_vertex)
+                  transitive = false if transitive_orientation.edge_exists?(unshared_edge_vertex, shared_vertex)
+                  transitive_orientation.add_edge(shared_vertex, unshared_edge_vertex) unless transitive_orientation.edge_exists?(shared_vertex, unshared_edge_vertex)
+                  unconsidered_edges.delete(order_vertices(shared_vertex, unshared_edge_vertex))
+                else
+                  transitive = false if transitive_orientation.edge_exists?(shared_vertex, unshared_edge_vertex)
+                  transitive_orientation.add_edge(unshared_edge_vertex, shared_vertex) unless transitive_orientation.edge_exists?(unshared_edge_vertex, shared_vertex)
+                  unconsidered_edges.delete(order_vertices(shared_vertex, unshared_edge_vertex))
+                end
+
+                adjacent_edges(edge.first, edge.last).each { |neighbor| explore.call neighbor }
+              end
+            end
+          end
+        end
+
+        adjacent_edges(considered_edge.first, considered_edge.last).each { |neighbor_edge| explore.call neighbor_edge }
+      end
+
+      if transitive && return_graph
+        transitive_orientation
+      else
+        transitive
+      end
+    end
+
   end
 end

@@ -251,4 +251,76 @@ describe Graphunk::UndirectedGraph do
       expect(graph.send(:order_vertices, 'b', 'a')).to eq ['a','b']
     end
   end
+
+  describe 'comparability?' do
+    context 'the graph is a comparability graph' do
+      let(:graph) { Graphunk::UndirectedGraph.new({'a' => ['b','g'], 'b' => ['c'], 'c' => ['d'], 'd' => ['e','f'], 'e' => ['f'], 'f' => ['g'], 'g' => [] }) }
+
+      it 'returns true' do
+        expect(graph.comparability?).to eql true
+      end
+    end
+
+    context 'the graph is not a comparability graph' do
+      let(:graph) { Graphunk::UndirectedGraph.new({'a' => ['b', 'g'], 'b' => ['c'], 'c' => ['d'], 'd' => ['e'], 'e' => ['f'], 'f' => ['g'], 'g' => []}) }
+      it 'returns false' do
+        expect(graph.comparability?).to eql false
+      end
+    end
+  end
+
+  describe 'transitive_orientation' do
+    context 'the graph is a comparability graph' do
+      let(:graph) { Graphunk::UndirectedGraph.new({'a' => ['b','g'], 'b' => ['c'], 'c' => ['d'], 'd' => ['e','f'], 'e' => ['f'], 'f' => ['g'], 'g' => [] }) }
+      it 'returns the transitive orientation of the graph' do
+        valid_orientation = Graphunk::DirectedGraph.new({'a' => ['b','g'], 'c' => ['b','d'], 'd' => [], 'e' => ['d'], 'f' => ['d','e','g']})
+        expect(graph.transitive_orientation.edges).to match_array(valid_orientation.edges)
+      end
+    end
+
+    context 'another comparability graph' do
+      let(:graph) { Graphunk::UndirectedGraph.new({'a' => ['b','c','d'], 'b' => ['c'], 'c' => ['d'], 'd' => [] }) }
+
+      it 'returns the transitive orientation of the graph' do
+        valid_orientation = Graphunk::DirectedGraph.new({'a' => ['b','c','d'], 'b' => ['c'], 'c' => [], 'd' => ['c']})
+        expect(graph.transitive_orientation.edges).to match_array(valid_orientation.edges)
+      end
+    end
+
+    context 'the graph is not a comparability graph' do
+      let(:graph) { Graphunk::UndirectedGraph.new({'a' => ['b', 'g'], 'b' => ['c'], 'c' => ['d'], 'd' => ['e'], 'e' => ['f'], 'f' => ['g'], 'g' => []}) }
+
+      it 'returns false' do
+        expect(graph.transitive_orientation).to eql false
+      end
+    end
+  end
+
+  describe 'degree' do
+    context 'the vertex exists' do
+      it 'returns the degree of the vertex' do
+        expect(graph.degree('a')).to eql 2
+      end
+    end
+
+    context 'the vertex does not exist' do
+      it 'raises an ArgumentError' do
+        expect{graph.degree('z')}.to raise_error ArgumentError
+      end
+    end
+  end
+
+  describe 'adjacent_edge' do
+    context 'the edge exists' do
+      it 'returns the edges adjacent to the given edge' do
+        expect(graph.adjacent_edges('a','b')).to match_array [ ['a','c'],['b','c'] ]
+      end
+    end
+
+    context 'the edge does not exist' do
+      it 'raises an ArgumentError' do
+        expect{graph.adjacent_edges('x','y')}.to raise_error ArgumentError
+      end
+    end
+  end
 end
