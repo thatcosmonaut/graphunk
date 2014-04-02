@@ -158,29 +158,31 @@ module Graphunk
         transitive_orientation.add_edge(considered_edge.first, considered_edge.last)
 
         explore = lambda do |edge|
-          if unconsidered_edges.include? edge
-            adjacent_edges(edge.first, edge.last).each do |adjacent_edge|
-              next if unconsidered_edges.include? adjacent_edge
+          edge_set = false
+          adjacent_edges(edge.first, edge.last).each do |adjacent_edge|
+            next if unconsidered_edges.include? adjacent_edge
 
-              shared_vertex = adjacent_edge.select { |vertex| edge.include? vertex }.first
-              unshared_edge_vertex = edge.reject { |vertex| adjacent_edge.include? vertex }.first
-              unshared_adjacent_edge_vertex = adjacent_edge.reject { |vertex| edge.include? vertex }.first
+            shared_vertex = adjacent_edge.select { |vertex| edge.include? vertex }.first
+            unshared_edge_vertex = edge.reject { |vertex| adjacent_edge.include? vertex }.first
+            unshared_adjacent_edge_vertex = adjacent_edge.reject { |vertex| edge.include? vertex }.first
 
-              unless edge_exists?(unshared_edge_vertex, unshared_adjacent_edge_vertex)
-                if transitive_orientation.edge_exists?(shared_vertex, unshared_adjacent_edge_vertex)
-                  transitive = false if transitive_orientation.edge_exists?(unshared_edge_vertex, shared_vertex)
-                  transitive_orientation.add_edge(shared_vertex, unshared_edge_vertex) unless transitive_orientation.edge_exists?(shared_vertex, unshared_edge_vertex)
-                  unconsidered_edges.delete(order_vertices(shared_vertex, unshared_edge_vertex))
-                else
-                  transitive = false if transitive_orientation.edge_exists?(shared_vertex, unshared_edge_vertex)
-                  transitive_orientation.add_edge(unshared_edge_vertex, shared_vertex) unless transitive_orientation.edge_exists?(unshared_edge_vertex, shared_vertex)
-                  unconsidered_edges.delete(order_vertices(shared_vertex, unshared_edge_vertex))
-                end
-
-                adjacent_edges(edge.first, edge.last).each { |neighbor| explore.call neighbor }
+            unless edge_exists?(unshared_edge_vertex, unshared_adjacent_edge_vertex)
+              if transitive_orientation.edge_exists?(shared_vertex, unshared_adjacent_edge_vertex)
+                transitive = false if transitive_orientation.edge_exists?(unshared_edge_vertex, shared_vertex)
+                transitive_orientation.add_edge(shared_vertex, unshared_edge_vertex) unless transitive_orientation.edge_exists?(shared_vertex, unshared_edge_vertex)
+                unconsidered_edges.delete(order_vertices(shared_vertex, unshared_edge_vertex))
+                edge_set = true
+              else
+                transitive = false if transitive_orientation.edge_exists?(shared_vertex, unshared_edge_vertex)
+                transitive_orientation.add_edge(unshared_edge_vertex, shared_vertex) unless transitive_orientation.edge_exists?(unshared_edge_vertex, shared_vertex)
+                unconsidered_edges.delete(order_vertices(shared_vertex, unshared_edge_vertex))
+                edge_set = true
               end
+
             end
           end
+
+          adjacent_edges(edge.first, edge.last).each { |neighbor| explore.call neighbor if unconsidered_edges.include? neighbor } if edge_set
         end
 
         adjacent_edges(considered_edge.first, considered_edge.last).each { |neighbor_edge| explore.call neighbor_edge }
