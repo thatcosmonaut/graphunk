@@ -323,4 +323,21 @@ describe Graphunk::UndirectedGraph do
       end
     end
   end
+
+  describe 'complement' do
+    let(:graph) { Graphunk::UndirectedGraph.new({'a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []}) }
+
+    it 'returns complement of the graph' do
+      expect(graph.complement.edges).to match_array [ ['a','d'], ['a','e'], ['c','e'] ]
+    end
+  end
+
+  describe 'complement!' do
+    let(:graph) { Graphunk::UndirectedGraph.new({'a' => ['b','c'], 'b' => ['c', 'd', 'e'], 'c' => ['d'], 'd' => ['e'], 'e' => []}) }
+
+    it 'transforms the graph into its complement' do
+      graph.complement!
+      expect(graph.edges).to match_array [ ['a','d'], ['a','e'], ['c','e'] ]
+    end
+  end
 end

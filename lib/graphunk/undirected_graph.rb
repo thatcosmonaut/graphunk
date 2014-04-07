@@ -36,6 +36,33 @@ module Graphunk
       end
     end
 
+    def complement
+      graph = Graphunk::UndirectedGraph.new
+      graph.add_vertices(*vertices)
+
+      pairs = vertices.combination(2).entries
+
+      pairs.each do |pair|
+        unless edge_exists?(pair.first, pair.last)
+          graph.add_edge(pair.first, pair.last)
+        end
+      end
+
+      graph
+    end
+
+    def complement!
+      pairs = vertices.combination(2).entries
+
+      pairs.each do |pair|
+        if edge_exists?(pair.first, pair.last)
+          remove_edge(pair.first, pair.last)
+        else
+          add_edge(pair.first, pair.last)
+        end
+      end
+    end
+
     def lexicographic_bfs
       sets = [vertices]
       output_vertices = []
